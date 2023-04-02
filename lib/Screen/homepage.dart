@@ -159,37 +159,51 @@ class Home extends StatelessWidget {
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 10),
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 5),
                   height: Get.height / 19,
                   decoration: BoxDecoration(
                       color: Colors.grey.shade200,
                       borderRadius: BorderRadius.circular(15)),
                   child: Row(
                     children: [
-                      const Icon(
-                        CupertinoIcons.search,
-                        color: Colors.green,
-                      ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
                         child: SizedBox(
-                            width: Get.width - 140,
+                            width: Get.width - 100,
                             child: TextFormField(
-                              onChanged: (val) {},
-                              decoration:
-                              InputDecoration(border: InputBorder.none),
-                            )),
+                              onChanged: (val) {
+                                homeProvider.searchData(val);
+                              },
+                              decoration:  InputDecoration(
+                                border: InputBorder.none,
+                                hintText:  "  Search",
+                                hintStyle: TextStyle(
+                                  color: Colors.black
+                                ),
+                                prefixIcon: Icon(
+                                  Icons.search_sharp,
+                                  size: 30,
+                                  color : Colors.green
+
+                                ),
+                              ),
+                            ),),
                       ),
-                      Container(
-                        width: Get.width / 11,
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: const Icon(
-                          Icons.filter_alt,
-                          color: Colors.white,
+                      GestureDetector(
+                        onTap: (){
+                          homeProvider.Load();
+                        },
+                        child: Container(
+                          width: Get.width / 11,
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: const Icon(
+                            Icons.filter_alt,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ],
@@ -240,7 +254,9 @@ class Home extends StatelessWidget {
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (_, index) {
                       var data = snapshot.data!.docs[index];
-                      return GestureDetector(
+                      return (data['name'].contains(homeProvider.searchText.value))
+                          ?
+                      GestureDetector(
                         onTap: () {
                           Get.to(Details(Currentindex: index,));
                         },
@@ -330,7 +346,8 @@ class Home extends StatelessWidget {
                             ],
                           ),
                         ),
-                      );
+                      ) :
+                      Container();
                     }),
               ],
             );

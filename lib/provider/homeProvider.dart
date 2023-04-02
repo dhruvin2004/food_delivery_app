@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:food_delivery_app/Screen/chat.dart';
 import 'package:food_delivery_app/Screen/favourite.dart';
 import 'package:food_delivery_app/Screen/homepage.dart';
@@ -11,7 +12,7 @@ class HomeProvider extends GetxController  {
 
 
 
-
+  final searchText = ValueNotifier<String>('');
   CollectionReference user = FirebaseFirestore.instance.collection('foodList');
 
   int index = 0;
@@ -29,7 +30,7 @@ class HomeProvider extends GetxController  {
   List page = [
     Home(),
     Chat(),
-    Notification(),
+    message(),
     Favourite(),
 
   ];
@@ -93,6 +94,14 @@ class HomeProvider extends GetxController  {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('Intro', data);
 
+    update();
+  }
+
+  searchData(String val){
+    searchText.value = val;
+  }
+
+  Load(){
     update();
   }
 
