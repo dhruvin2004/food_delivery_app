@@ -6,10 +6,14 @@ class Chat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text("Chat"),
-      ],
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+
+        children: [
+          Text("Chat"),
+        ],
+      ),
     );
   }
 }

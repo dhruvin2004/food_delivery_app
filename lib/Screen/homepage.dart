@@ -137,7 +137,7 @@ class Home extends StatelessWidget {
               return Text("Some Thing Went Wrong");
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
+              return Center(child: CircularProgressIndicator());
             }
             return ListView(
               physics: BouncingScrollPhysics(),

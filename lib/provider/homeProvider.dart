@@ -5,6 +5,7 @@ import 'package:food_delivery_app/Screen/homepage.dart';
 import 'package:food_delivery_app/Screen/notification.dart';
 
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeProvider extends GetxController  {
 
@@ -15,6 +16,7 @@ class HomeProvider extends GetxController  {
 
   int index = 0;
   int current = 0;
+  bool isTrue = false;
 
   List tab = [
     "All",
@@ -84,6 +86,13 @@ class HomeProvider extends GetxController  {
 
   decrement(var data){
     data -- ;
+    update();
+  }
+
+  InroData(bool data)async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('Intro', data);
+
     update();
   }
 
