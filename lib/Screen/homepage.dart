@@ -1,4 +1,3 @@
-
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,6 +13,8 @@ import '../provider/homeProvider.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -60,171 +61,12 @@ class HomePage extends StatelessWidget {
               ),
             ],
           ),
-          body: StreamBuilder(
-            stream: FirebaseFirestore.instance.collection('foodList').snapshots(),
-            builder: (context,snapshot){
-              if(snapshot.hasError)
-              {
-                return Text("Some Thing Went Wrong");
-              }
-              if(snapshot.connectionState == ConnectionState.waiting)
-              {
-                return CircularProgressIndicator();
-              }
-              return ListView(
-                physics: BouncingScrollPhysics(),
-                padding: EdgeInsets.all(12),
-                children: [
-                  Text(
-                    "Hi Dhruvin",
-                    style: GoogleFonts.openSans(
-                        fontSize: 22,
-                        color: Colors.green,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    "Find Your food",
-                    style: GoogleFonts.openSans(
-                        fontSize: 28,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 10),
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    height: Get.height / 19,
-                    decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(15)),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          CupertinoIcons.search,
-                          color: Colors.green,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: SizedBox(
-                              width: Get.width - 140,
-                              child: TextFormField(
-                                onChanged: (val) {},
-                                decoration:
-                                InputDecoration(border: InputBorder.none),
-                              )),
-                        ),
-                        Container(
-                          width: Get.width / 11,
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: const Icon(
-                            Icons.filter_alt,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 5,),
-                  SizedBox(
-                    height: 30,
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: homeProvider.tab.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              homeProvider.TabSelected(index);
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              alignment: Alignment.center,
-                              margin: EdgeInsets.only(right: 10),
-                              height: 25,
-                              child: Text(
-                                "${homeProvider.tab[index]}",
-                                style: GoogleFonts.openSans(
-                                    color: (homeProvider.current == index)
-                                        ? Colors.green
-                                        : Colors.grey,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                          );
-                        }),
-                  ),
-                  SizedBox(height: 5,),
-                  GridView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 0.7,
-                          mainAxisSpacing: 5,
-                          crossAxisSpacing: 5),
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (_, index) {
-                        var data = snapshot.data!.docs[index];
-                        return GestureDetector(
-                          onTap: (){
-                            Get.to(Details());
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: Colors.primaries[
-                              Random().nextInt(Colors.primaries.length)],
-                            ),
-                            child: Column(
-                              children: [
-                                Text(data['name']),
-                                Spacer(),
-                                Row(
-                                  children: [
-                                    SizedBox(width: 20,),
-                                    Text("₹ ${data['price']}"),
-                                    Spacer(),
-                                    GestureDetector(
-                                      onTap: (){
-                                        if(data['cart'] == false)
-                                          {
-                                            homeProvider.updateData(index,true ,data);
-                                          }
-                                        else
-                                          {
-                                            homeProvider.updateData(index,false ,data);
-                                          }
-                                      },
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        height: 40,
-                                        width: 40,
-                                        decoration: BoxDecoration(
-                                            color: Colors.green,
-                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(15),bottomRight: Radius.circular(15))
-                                        ),
-                                        child: (data['cart'] == false)?Icon(Icons.add,color: Colors.white,):Icon(Icons.done),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      }),
-                ],
-              );
-            },
-
-          ),
+          backgroundColor: Colors.grey.shade100,
+          body: homeProvider.page[homeProvider.index],
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           floatingActionButton: GestureDetector(
-            onTap: (){
+            onTap: () {
               Get.toNamed('cart');
             },
             child: Container(
@@ -273,6 +115,228 @@ class HomePage extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+
+
+class Home extends StatelessWidget {
+  const Home({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder(
+        init: HomeProvider(),
+      builder: (HomeProvider homeProvider) {
+        return StreamBuilder(
+          stream:
+          FirebaseFirestore.instance.collection('foodList').snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text("Some Thing Went Wrong");
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            }
+            return ListView(
+              physics: BouncingScrollPhysics(),
+              padding: EdgeInsets.all(12),
+              children: [
+                Text(
+                  "Hi Dhruvin",
+                  style: GoogleFonts.openSans(
+                      fontSize: 22,
+                      color: Colors.green,
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "Find Your food",
+                  style: GoogleFonts.openSans(
+                      fontSize: 28,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  height: Get.height / 19,
+                  decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(15)),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        CupertinoIcons.search,
+                        color: Colors.green,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: SizedBox(
+                            width: Get.width - 140,
+                            child: TextFormField(
+                              onChanged: (val) {},
+                              decoration:
+                              InputDecoration(border: InputBorder.none),
+                            )),
+                      ),
+                      Container(
+                        width: Get.width / 11,
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: const Icon(
+                          Icons.filter_alt,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                SizedBox(
+                  height: 30,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: homeProvider.tab.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            homeProvider.TabSelected(index);
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.only(right: 10),
+                            height: 25,
+                            child: Text(
+                              "${homeProvider.tab[index]}",
+                              style: GoogleFonts.openSans(
+                                  color: (homeProvider.current == index)
+                                      ? Colors.green
+                                      : Colors.grey,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                        );
+                      }),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                GridView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 0.7,
+                        mainAxisSpacing: 5,
+                        crossAxisSpacing: 5),
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (_, index) {
+                      var data = snapshot.data!.docs[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Get.to(Details(Currentindex: index,));
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Spacer(),
+                              Container(
+                                height: 150,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: NetworkImage(data['img']))),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  data['name'],
+                                  style: GoogleFonts.openSans(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Spacer(),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Text(
+                                    "₹ ${data['price']}",
+                                    style: GoogleFonts.openSans(
+                                        color: Color(0xff4AA232),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
+                                  ),
+                                  (data['category'] == "Grocery" ||
+                                      data['category'] == "Vegetables")
+                                      ? Text(
+                                    "  Per Kg",
+                                    style: GoogleFonts.openSans(
+                                        color: Colors.grey.shade400,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14),
+                                  )
+                                      : Container(),
+                                  Spacer(),
+                                  GestureDetector(
+                                    onTap: () {
+                                      if (data['cart'] == false) {
+                                        homeProvider.updateData(
+                                            index, true, data);
+                                      } else {
+                                        homeProvider.updateData(
+                                            index, false, data);
+                                      }
+                                    },
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      height: 40,
+                                      width: 40,
+                                      decoration: BoxDecoration(
+                                          color: Colors.green,
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(15),
+                                              bottomRight:
+                                              Radius.circular(15))),
+                                      child: (data['cart'] == false)
+                                          ? Icon(
+                                        Icons.add,
+                                        color: Colors.white,
+                                      )
+                                          : Icon(Icons.done,color: Colors.white,),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
+              ],
+            );
+          },
+        );
+      }
     );
   }
 }
