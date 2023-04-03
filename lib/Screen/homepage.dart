@@ -157,58 +157,64 @@ class Home extends StatelessWidget {
                       color: Colors.black,
                       fontWeight: FontWeight.bold),
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: 10),
-                  padding: EdgeInsets.symmetric(horizontal: 5),
-                  height: Get.height / 19,
-                  decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(15)),
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: SizedBox(
-                            width: Get.width - 100,
-                            child: TextFormField(
-                              onChanged: (val) {
-                                homeProvider.searchData(val);
-                              },
-                              decoration:  InputDecoration(
-                                border: InputBorder.none,
-                                hintText:  "  Search",
-                                hintStyle: TextStyle(
-                                  color: Colors.black
-                                ),
-                                prefixIcon: Icon(
-                                  Icons.search_sharp,
-                                  size: 30,
-                                  color : Colors.green
-
-                                ),
-                              ),
-                            ),),
-                      ),
-                      GestureDetector(
-                        onTap: (){
-                          homeProvider.Load();
-                        },
-                        child: Container(
-                          width: Get.width / 11,
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: const Icon(
-                            Icons.filter_alt,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                CupertinoSearchTextField(
+                onChanged: (val){
+                  homeProvider.searchData(val);
+                },
                 ),
+                // Container(
+                //   margin: EdgeInsets.only(top: 10),
+                //   padding: EdgeInsets.symmetric(horizontal: 5),
+                //   height: Get.height / 19,
+                //   decoration: BoxDecoration(
+                //       color: Colors.grey.shade200,
+                //       borderRadius: BorderRadius.circular(15)),
+                //   child: Row(
+                //     children: [
+                //       Padding(
+                //         padding: const EdgeInsets.symmetric(horizontal: 5),
+                //         child: SizedBox(
+                //             width: Get.width - 100,
+                //             child: TextFormField(
+                //               controller: homeProvider.serchController,
+                //               onSaved: (val) {
+                //                 homeProvider.searchData(val!);
+                //               },
+                //               decoration:  InputDecoration(
+                //                 border: InputBorder.none,
+                //                 hintText:  "  Search",
+                //                 hintStyle: TextStyle(
+                //                   color: Colors.black
+                //                 ),
+                //                 prefixIcon: Icon(
+                //                   Icons.search_sharp,
+                //                   size: 30,
+                //                   color : Colors.green
+                //
+                //                 ),
+                //               ),
+                //             ),),
+                //       ),
+                //       GestureDetector(
+                //         onTap: (){
+                //           homeProvider.Load();
+                //         },
+                //         child: Container(
+                //           width: Get.width / 11,
+                //           alignment: Alignment.center,
+                //           margin: EdgeInsets.all(6),
+                //           decoration: BoxDecoration(
+                //               color: Colors.green,
+                //               borderRadius: BorderRadius.circular(10)),
+                //           child: const Icon(
+                //             Icons.filter_alt,
+                //             color: Colors.white,
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 SizedBox(
                   height: 5,
                 ),
@@ -254,9 +260,8 @@ class Home extends StatelessWidget {
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (_, index) {
                       var data = snapshot.data!.docs[index];
-                      return (data['name'].contains(homeProvider.searchText.value))
-                          ?
-                      GestureDetector(
+                      if ((data['name'].contains(homeProvider.searchText.value))) {
+                        return GestureDetector(
                         onTap: () {
                           Get.to(Details(Currentindex: index,));
                         },
@@ -342,8 +347,10 @@ class Home extends StatelessWidget {
                             ],
                           ),
                         ),
-                      ) :
-                      Container();
+                      );
+                      } else {
+                        return Container();
+                      }
                     }),
               ],
             );

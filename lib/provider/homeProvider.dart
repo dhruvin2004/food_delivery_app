@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class HomeProvider extends GetxController  {
 
 
-
+  TextEditingController serchController = TextEditingController();
   final searchText = ValueNotifier<String>('');
   CollectionReference user = FirebaseFirestore.instance.collection('foodList');
 
@@ -47,14 +47,11 @@ class HomeProvider extends GetxController  {
 
 
   cartDone(){
-
-
     update();
   }
   updateData(int? index, bool  cart,var data) async {
     var docSnap = await user.get();
     var docId = docSnap.docs;
-
     return user
         .doc(docId[index!].id)
         .update({'cart': cart})
@@ -68,7 +65,6 @@ class HomeProvider extends GetxController  {
   likeData(int? index, bool  like,var data) async {
     var docSnap = await user.get();
     var docId = docSnap.docs;
-
     return user
         .doc(docId[index!].id)
         .update({'like': like})
@@ -93,7 +89,6 @@ class HomeProvider extends GetxController  {
   InroData(bool data)async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('Intro', data);
-
     update();
   }
 
@@ -102,6 +97,7 @@ class HomeProvider extends GetxController  {
   }
 
   Load(){
+    serchController.clear();
     update();
   }
 
