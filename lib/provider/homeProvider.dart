@@ -13,10 +13,16 @@ class HomeProvider extends GetxController  {
 
   TextEditingController serchController = TextEditingController();
   final searchText = ValueNotifier<String>('');
+  final Duration initialDelay = Duration(seconds: 1);
   CollectionReference user = FirebaseFirestore.instance.collection('foodList');
 
+  List Pizza = [];
+  List Fruit = [];
+  List Vegetables = [];
+  List Grocery = [];
+
   int index = 0;
-  int current = 0;
+  String current = "All";
   bool isTrue = false;
 
   List tab = [
@@ -39,7 +45,7 @@ class HomeProvider extends GetxController  {
     update();
   }
 
-  TabSelected(int a)
+  TabSelected(String a)
   {
     current = a;
     update();

@@ -6,14 +6,43 @@ class Chat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-
-        children: [
-          Text("Chat"),
-        ],
-      ),
+    return ListView(
+      children: [
+        buildMessage(
+          isMe: false,
+          senderName: 'John Doe',
+          messageText: 'Hello',
+        ),
+        buildMessage(
+          isMe: true,
+          senderName: 'You',
+          messageText: 'Hi',
+        ),
+        buildMessage(
+          isMe: false,
+          senderName: 'John Doe',
+          messageText: 'How are you?',
+        ),
+      ],
     );
   }
 }
+
+Widget buildMessage({
+  required bool isMe,
+  required String senderName,
+  required String messageText,
+}) {
+  return ListTile(
+    leading: CircleAvatar(
+      child: Text(senderName[0]),
+    ),
+    title: Text(
+      senderName,
+      style: TextStyle(fontWeight: FontWeight.bold),
+    ),
+    subtitle: Text(messageText),
+    trailing: isMe ? Icon(Icons.check) : null,
+  );
+}
+

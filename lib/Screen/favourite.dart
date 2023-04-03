@@ -52,7 +52,7 @@ class Favourite extends StatelessWidget {
                     ),
                     child:  GestureDetector(
                       onTap: (){
-                        Get.to(Details(Currentindex: index));
+                        Get.to(Details(data: data[index],Currentindex: index));
                       },
                       child: Container(
                         margin: EdgeInsets.only(bottom: 8),
