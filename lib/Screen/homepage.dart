@@ -268,14 +268,9 @@ class Home extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Spacer(),
-                              Container(
-                                height: 150,
-                                width: 150,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: NetworkImage(data['img']))),
-                              ),
+                            SizedBox(height: 50,),
+                              Center(child: Image.network(data['img'],height: 120,)),
+                              SizedBox(height: 20,),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
@@ -285,6 +280,7 @@ class Home extends StatelessWidget {
                                       fontSize: 16),
                                 ),
                               ),
+                              Spacer(),
                               Row(
                                 children: [
                                   Spacer(),
