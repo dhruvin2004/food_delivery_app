@@ -12,7 +12,7 @@ A few resources to get you started if this is your first Flutter project:
 - [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 <table>
   <tr>
-    <td> <img src="image/untitled.giff"  alt="1" width = 360px height = 640px ></td>
+    <td> <img src="image/untitled.gif"  alt="1" width = 360px height = 640px ></td>
   </tr>
 </table>
 
