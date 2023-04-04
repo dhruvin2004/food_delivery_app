@@ -75,7 +75,7 @@ class MyCart extends StatelessWidget {
                         ),
                         child:  GestureDetector(
                           onTap: (){
-                            Get.to(Details(data: data[index],Currentindex: index));
+                            Get.to(Details(data: snapshot.data!.docs[index]));
                           },
                           child: Container(
                             margin: EdgeInsets.only(bottom: 8),
@@ -109,7 +109,10 @@ class MyCart extends StatelessWidget {
                                       children: [
                                         GestureDetector(
                                           onTap: (){
-
+                                            cartprovider.Increment(
+                                              snapshot.data!.docs[index].id,
+                                              snapshot.data!.docs[index]['num'],
+                                            );
                                           },
                                           child: Container(
                                             alignment: Alignment.center,
@@ -123,10 +126,13 @@ class MyCart extends StatelessWidget {
                                             child: Icon(Icons.add,color: Colors.white,),
                                           ),
                                         ),
-                                        Text(data['num'].toString(),style: GoogleFonts.openSans(color: Colors.black,fontSize: 28,fontWeight: FontWeight.bold),),
+                                        Text("${data['num']}",style: GoogleFonts.openSans(color: Colors.black,fontSize: 28,fontWeight: FontWeight.bold),),
                                         GestureDetector(
                                           onTap: (){
-
+                                            cartprovider.Decrement(
+                                                snapshot.data!.docs[index].id,
+                                              snapshot.data!.docs[index]['num'],
+                                            );
                                           },
                                           child: Container(
                                             margin: EdgeInsets.only(left: 10),

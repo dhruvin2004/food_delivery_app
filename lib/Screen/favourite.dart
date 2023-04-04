@@ -52,7 +52,7 @@ class Favourite extends StatelessWidget {
                     ),
                     child:  GestureDetector(
                       onTap: (){
-                        Get.to(Details(data: data[index],Currentindex: index));
+                        Get.to(Details(data:snapshot.data!.docs[index] ));
                       },
                       child: Container(
                         margin: EdgeInsets.only(bottom: 8),
@@ -81,44 +81,7 @@ class Favourite extends StatelessWidget {
                               children: [
                                 AutoSizeText(data['name'],style: GoogleFonts.openSans(color: Colors.black,fontSize: 20,fontWeight: FontWeight.bold),),
                                 Text("₹ ${data['price']}",style: GoogleFonts.openSans(color: Color(0xff4BA333),fontSize: 16,fontWeight: FontWeight.bold),),
-                                SizedBox(height: 20,),
-                                Row(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: (){
 
-                                      },
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        height: 30,
-                                        width: 30,
-                                        margin: EdgeInsets.only(right: 10),
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(6),
-                                            color: Color(0xff4BA333)
-                                        ),
-                                        child: Icon(Icons.add,color: Colors.white,),
-                                      ),
-                                    ),
-                                    Text(data['num'].toString(),style: GoogleFonts.openSans(color: Colors.black,fontSize: 28,fontWeight: FontWeight.bold),),
-                                    GestureDetector(
-                                      onTap: (){
-
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.only(left: 10),
-                                        alignment: Alignment.center,
-                                        height: 30,
-                                        width: 30,
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(6),
-                                            color: Color(0xff4BA333)
-                                        ),
-                                        child: Text("-",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 30),),
-                                      ),
-                                    ),
-                                  ],
-                                ),
                               ],
                             ),
 

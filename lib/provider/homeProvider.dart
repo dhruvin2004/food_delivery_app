@@ -55,11 +55,10 @@ class HomeProvider extends GetxController  {
   cartDone(){
     update();
   }
-  updateData(int? index, bool  cart,var data) async {
-    var docSnap = await user.get();
-    var docId = docSnap.docs;
+  updateData(String id, bool  cart,var data) async {
+
     return user
-        .doc(docId[index!].id)
+        .doc(id)
         .update({'cart': cart})
         .then((value) => print("Update Successfully"))
         .catchError(
@@ -68,11 +67,9 @@ class HomeProvider extends GetxController  {
 
   }
 
-  likeData(int? index, bool  like,var data) async {
-    var docSnap = await user.get();
-    var docId = docSnap.docs;
+  likeData( String id, bool  like,var data) async {
     return user
-        .doc(docId[index!].id)
+        .doc(id)
         .update({'like': like})
         .then((value) => print("Update Successfully"))
         .catchError(
@@ -81,15 +78,22 @@ class HomeProvider extends GetxController  {
 
   }
 
-  increment(var data){
-
-
-
+  Increment(String id, int num) {
+    if (num > 0) num++;
+    return user
+        .doc(id)
+        .update({'num': num})
+        .then((value) => print("Value Updated..."))
+        .catchError((error) => print("Error :: $error"));
   }
 
-  decrement(var data){
-    data -- ;
-    update();
+  Decrement(String id, int num) {
+    if (num > 1) num--;
+    return user
+        .doc(id)
+        .update({'qty': num})
+        .then((value) => print("Value Updated..."))
+        .catchError((error) => print("Error :: $error"));
   }
 
   InroData(bool data)async{
@@ -103,7 +107,6 @@ class HomeProvider extends GetxController  {
   }
 
   Load(){
-    serchController.clear();
     update();
   }
 

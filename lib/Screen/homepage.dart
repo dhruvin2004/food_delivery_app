@@ -163,16 +163,19 @@ class Home extends StatelessWidget {
                         homeProvider.TabSelected(homeProvider.tab[index]);
                       },
                       child: Container(
+                        width:70,
                         padding: EdgeInsets.symmetric(horizontal: 10),
                         alignment: Alignment.center,
                         margin: EdgeInsets.only(right: 10),
                         height: 25,
+                        decoration: BoxDecoration(color: (homeProvider.current == homeProvider.tab[index])?Colors.green:Colors.white,
+                            borderRadius: BorderRadius.circular(10)),
                         child: Text(
                           "${homeProvider.tab[index]}",
                           style: GoogleFonts.openSans(
                               color: (homeProvider.current == homeProvider.tab[index])
-                                  ? Colors.green
-                                  : Colors.grey,
+                                  ? Colors.white
+                                  : Colors.green,
                               fontSize: 18,
                               fontWeight: FontWeight.w500),
                         ),
@@ -210,7 +213,7 @@ class Home extends StatelessWidget {
                              onTap: () {
                                Get.to(Details(
                                  data: snapshot.data!.docs[index],
-                                 Currentindex: index,
+
                                ));
                              },
                              child: Container(
@@ -275,10 +278,10 @@ class Home extends StatelessWidget {
                                          onTap: () {
                                            if (data['cart'] == false) {
                                              homeProvider.updateData(
-                                                 index, true, data);
+                                                 snapshot.data!.docs[index].id, true, data);
                                            } else {
                                              homeProvider.updateData(
-                                                 index, false, data);
+                                                 snapshot.data!.docs[index].id, false, data);
                                            }
                                          },
                                          child: Container(
@@ -342,7 +345,6 @@ class Home extends StatelessWidget {
                               onTap: () {
                                 Get.to(Details(
                                   data: snapshot.data!.docs[index],
-                                  Currentindex: index,
                                 ));
                               },
                               child: Container(
@@ -407,10 +409,10 @@ class Home extends StatelessWidget {
                                           onTap: () {
                                             if (data['cart'] == false) {
                                               homeProvider.updateData(
-                                                  index, true, data);
+                                                  snapshot.data!.docs[index].id, true, data);
                                             } else {
                                               homeProvider.updateData(
-                                                  index, false, data);
+                                                  snapshot.data!.docs[index].id, false, data);
                                             }
                                           },
                                           child: Container(
